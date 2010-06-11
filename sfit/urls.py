@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.views.generic.simple import direct_to_template
+from grid.views import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -16,9 +17,11 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+    #(r'^users/', profile),
+    (r'^users/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),
 
-    (r'^$', direct_to_template, {'template': 'index.html'}),
-
+    (r'^$', grid_edit),
 )

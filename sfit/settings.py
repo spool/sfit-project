@@ -87,6 +87,8 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates')
 )
 
+LOGIN_URL = '/users/login/'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
