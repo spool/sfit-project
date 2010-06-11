@@ -1,3 +1,4 @@
 django
 django-piston
+south
 django-debug-toolbar
