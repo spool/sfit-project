@@ -1,1 +1,5 @@
 We're writing a collaborative aesthetic environment for the 2010 SFI Complexity Summer School. Hopefully we'll get a cool t-shirt at the end.
+
+1. Create Virtualenv
+2. Activate
+3. Install dependencies in requirements.txt
