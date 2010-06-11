@@ -32,5 +32,10 @@ class Design(models.Model):
         get_latest_by = "timestamp"
         ordering = ['timestamp']
 
-admin.site.register(Delta)
-admin.site.register(Design)
+class DeltaInline(admin.TabularInline):
+    model = Delta
+
+class DesignAdmin(admin.ModelAdmin):
+    inlines = [DeltaInline]
+
+admin.site.register(Design, DesignAdmin)
