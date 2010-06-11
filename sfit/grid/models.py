@@ -8,8 +8,8 @@ class Delta(models.Model):
     edges_v   = models.CharField(max_length=4160)
     diag_se   = models.CharField(max_length=4096)
     diag_sw   = models.CharField(max_length=4096)
-    cell      = models.PositiveSmallIntegerField()
-    user      = models.ForeignKey(User, related_name='deltas')
+    cell      = models.PositiveSmallIntegerField(blank=True, null=True)
+    user      = models.ForeignKey(User, null=True, related_name='deltas')
 
     def __unicode__(self):
         return '%s: %s' % (self.user, self.timestamp)
