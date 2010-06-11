@@ -4,7 +4,7 @@ function load_data(data)
 {
 	graph = jQuery.parseJSON(data);
 
-	$.get("sfit-draw-2.pjs", function(code) {
+	$.get("/media/js/sfit-draw-2.pjs", function(code) {
 		canvas = $("#canvas")[0];
 		processing = Processing(canvas, code);
                 //calling from JS to PJS:
@@ -26,7 +26,7 @@ function save()
 
 $(document).ready(function()
 {
-	url = "http://172.29.17.90:8080/api/netjs/griff/";
+	url = "http://localhost:8080/pi/netjs/griff/";
 	$.ajax({
 		url: url,
 		success: load_data
