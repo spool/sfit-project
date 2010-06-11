@@ -95,6 +95,5 @@ INSTALLED_APPS = (
     'piston',
     'grid',
     'south',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
 )
