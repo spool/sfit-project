@@ -5,7 +5,8 @@ from grid.api.resources import DeltaHandler
 delta_handler = Resource(DeltaHandler)
 
 urlpatterns = patterns('',
-        url(r'^netjs/$', node_handler),
-        url(r'^netjs/(?P<slug>[^/]+)/$', node_handler),
+        url(r'^grid/$', design_handler),
+        url(r'^grid/(?P<slug>[^/]+)/$', design_handler),
+        url(r'^grid/(?P<slug>[^/]+)/(?P<timestamp>[^/]+)/$', design_handler),
         )
 

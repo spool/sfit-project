@@ -1,5 +1,11 @@
 from piston.handler import BaseHandler
+from django import forms
+from piston.utils import validate, rc
 from grid.models import *
+
+class DeltaForm(forms.ModelForm):
+    class Meta:
+        model = Delta
 
 class DesignHandler(BaseHandler):
     allowed_methods = ('GET', 'POST')
@@ -21,4 +27,12 @@ class DesignHandler(BaseHandler):
                 return design
         else:
             return Design.objects.all()
+
+    @validate(DeltaForm)
+    def create(self, request, slug):
+        design = Design.objects.get(slug=slug)
+        delta = request.form.save()
+        design.deltas.add(delta)
+        return delta
+        
         
