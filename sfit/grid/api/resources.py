@@ -6,6 +6,7 @@ from grid.models import *
 class DeltaForm(forms.ModelForm):
     class Meta:
         model = Delta
+        exclude = ('user', 'design')
 
 class DesignHandler(BaseHandler):
     allowed_methods = ('GET', 'POST')
@@ -31,8 +32,8 @@ class DesignHandler(BaseHandler):
     @validate(DeltaForm)
     def create(self, request, slug):
         design = Design.objects.get(slug=slug)
-        delta = request.form.save()
-        design.deltas.add(delta)
+        delta  = Delta.objects.create(user=request.user, design=design)
+        delta  = DeltaForm(request.POST, instance=delta)
         return delta
         
         
