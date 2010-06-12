@@ -6,13 +6,13 @@ class TimeSeriesManager(models.Manager):
 
     def last(self):
         try:
-            return self.objects.latest()
+            return self.latest()
         except:
             return None
 
     def first(self):
         try:
-            return self.objects.all()[0]
+            return self.all()[0]
         except:
             return None
 
