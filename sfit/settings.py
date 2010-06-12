@@ -95,8 +95,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
     'piston',
     'grid',
     'south',
-    'django.contrib.admin',
 )
