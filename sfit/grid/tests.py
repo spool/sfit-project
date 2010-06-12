@@ -20,14 +20,15 @@ class ApiTest(TestCase):
         d_sw = rand_bool_seq()
         d_se = rand_bool_seq()
         post_data = {
-                'edge_h'  : e_h,
-                'edge_v'  : e_v,
-                'diag_sw' : d_sw,
-                'diag_se' : d_se,
+                'edges_h'  : e_h,
+                'edges_v'  : e_v,
+                'diag_sw'  : d_sw,
+                'diag_se'  : d_se,
                 }
         login = self.client.login(username='test', password='test')
         self.failUnless(login, 'Could not login')
         response = self.client.post('/grid/api/tshirt/', post_data)
+        print response
         self.assertEqual(response.status_code, 200)
         d = Design.objects.last()
         delta = d.deltas.last()
@@ -46,8 +47,8 @@ def rand_bool_seq(length=256):
     import random
     l = ''
     for i in range(length):
-        if random.random() > .5: l + '1'
-        else: l + '0'
+        if random.random() > .5: l += '1'
+        else: l += '0'
     return l
 
 __test__ = {"doctest": """
