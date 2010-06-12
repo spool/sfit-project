@@ -6,6 +6,6 @@ from grid.models import *
 @login_required
 def grid_edit(request, slug=None):
     if slug: d = get_object_or_404(Design, slug=slug)
-    else: d = Design.objects.latest()
+    else: d = Design.objects.last()
     return render_to_response('base.html', {'design': d})
 

@@ -2,7 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 
-# Create your models here.
+class TimeSeriesManager(models.Manager):
+
+    def last(self):
+        try:
+            return self.objects.latest()
+        except:
+            return None
+
+    def first(self):
+        try:
+            return self.objects.all()[0]
+        except:
+            return None
+
 class Delta(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     edges_h   = models.CharField(max_length=4096)
@@ -12,6 +25,7 @@ class Delta(models.Model):
     cell      = models.PositiveSmallIntegerField(blank=True, null=True)
     user      = models.ForeignKey(User, null=True, related_name='deltas')
     design    = models.ForeignKey('Design', related_name='deltas')
+    objects   = TimeSeriesManager()
 
     def __unicode__(self):
         return '%s: %s' % (self.user, self.timestamp)
@@ -21,9 +35,10 @@ class Delta(models.Model):
         ordering = ['timestamp']
 
 class Design(models.Model):
-    slug      = models.SlugField()
+    slug      = models.SlugField(unique=True)
     name      = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
+    objects   = TimeSeriesManager()
 
     def __unicode__(self):
         return self.name

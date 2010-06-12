@@ -3,7 +3,7 @@ from django.views.generic.simple import direct_to_template
 from grid.models import Design
 
 design_dict = {
-        'design' : Design.objects.latest(),
+        'design' : Design.objects.last(),
         }
 
 urlpatterns = patterns('',
