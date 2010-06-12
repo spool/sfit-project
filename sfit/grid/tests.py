@@ -28,11 +28,11 @@ class ApiTest(TestCase):
         login = self.client.login(username='test', password='test')
         self.failUnless(login, 'Could not login')
         response = self.client.post('/grid/api/tshirt/', post_data)
-        print response
         self.assertEqual(response.status_code, 200)
-        d = Design.objects.last()
+        print Design.objects.all()
+        d = Design.objects.get(slug='tshirt')
         delta = d.deltas.last()
-        self.assertEqual(delta.e_h, e_h)
+        self.assertEqual(delta.edges_h, e_h)
         self.assertEqual(delta.user, User.objects.get(username='test'))
         
 
