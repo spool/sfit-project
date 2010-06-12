@@ -11,10 +11,8 @@ from grid.models import *
 class ApiTest(TestCase):
 
     def setUp(self):
-        u = User(username='test', password='test')
-        u.save()
-        d = Design(slug='tshirt', name= 'T Shirt')
-        d.save()
+        u = User.objects.create_user('test', 'test@test.com', 'test')
+        d = Design.objects.create(slug='tshirt', name= 'T Shirt')
 
     def test_post(self):
         e_h  = rand_bool_seq()
@@ -27,9 +25,8 @@ class ApiTest(TestCase):
                 'diag_sw' : d_sw,
                 'diag_se' : d_se,
                 }
-        #login = self.client.login(username='test', password='test')
-        #print login
-        #self.failUnless(login, 'Could not login')
+        login = self.client.login(username='test', password='test')
+        self.failUnless(login, 'Could not login')
         response = self.client.post('/grid/api/tshirt/', post_data)
         self.assertEqual(response.status_code, 200)
         d = Design.objects.latest()
