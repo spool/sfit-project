@@ -13,7 +13,7 @@ class ApiTest(TestCase):
 
     def setUp(self):
         self.u = User.objects.create_user('test', 'test@test.com', 'test')
-        self.d = Design.objects.create(slug='tshirt', name= 'T Shirt')
+        self.design = Design.objects.create(slug='tshirt', name= 'T Shirt')
         self.e_h  = rand_bool_seq(4096)
         self.e_v  = rand_bool_seq(4096)
         self.d_sw = rand_bool_seq(4096)
@@ -51,9 +51,28 @@ class ApiTest(TestCase):
         response = self.client.post('/grid/api/tshirt/', self.post_data)
         self.assertEqual(response.status_code, 200)
         
+class UITest(TestCase):
 
+    def setUp(self):
+        self.u = User.objects.create_user('test', 'test@test.com', 'test')
+        self.design = Design.objects.create(slug='tshirt', name= 'T Shirt')
+        self.e_h  = rand_bool_seq(4096)
+        self.e_v  = rand_bool_seq(4096)
+        self.d_sw = rand_bool_seq(4096)
+        self.d_se = rand_bool_seq(4096)
+        self.cell = random.randint(0,63)
+        self.delta = Delta(edges_h=self.e_h, edges_v=self.e_v, diag_sw=self.d_sw,
+                diag_se=self.d_se, cell=self.cell, user=self.u)
+        self.design.deltas.add(self.delta)
+
+    def testRecentChanges(self):
+        login = self.client.login(username='test', password='test')
+        self.failUnless(login, 'Could not login')
+        response = self.client.get('/grid/grid/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['design'], self.design)
+        self.assertEqual(response.context['delta'], self.delta)
         
-
 
 class SimpleTest(TestCase):
     def test_basic_addition(self):
