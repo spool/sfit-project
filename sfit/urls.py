@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     #(r'^users/', profile),
     (r'^users/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    (r'^users/logout/$', 'django.contrib.auth.views.logout_then_login'),
 
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),

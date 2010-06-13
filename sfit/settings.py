@@ -88,6 +88,7 @@ TEMPLATE_DIRS = (
 )
 
 LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/grid/'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
