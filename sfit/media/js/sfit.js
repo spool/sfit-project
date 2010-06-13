@@ -2,8 +2,6 @@ var processing;
 
 function load_data(data)
 {
-//	graph = jQuery.parseJSON(data);
-	var p;
 	graph = new Array(4);
 	graph[0] = (data.edges_h);
 	graph[1] = (data.edges_v);
@@ -15,7 +13,6 @@ function load_data(data)
 		processing = Processing(canvas, code);
                 //calling from JS to PJS:
 		processing.setData(graph);
-		//setData(graph);
 	}); 
 }
 
@@ -27,8 +24,16 @@ function save()
 {
 	data = processing.getData();
 	url = "/grid/api/tshirt/";
-	alert("data len is " + data[1].length);
-	$.post(url, { edges_h: data[0], edges_v: data[1], diag_se: data[2], diag_sw: data[3], cell: 0 }, saved, "json");
+	// url = "http://erase.net/dump/save.php";
+	// $.post(url, { edges_h: "" + data[0], edges_v: "" + data[1], diag_se: "" + data[2], diag_sw: "" + data[3], cell: "0" }, saved);
+	data_dict = { edges_h: data[0], edges_v: data[1], diag_se: data[2], diag_sw: data[3], cell: "0" };
+	alert("lengths: " + data[0].length + ", " + data[1].length + ", " + data[2].length + ", " + data[3].length);
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: data_dict,
+		success: saved
+	});
 }
 
 $(document).ready(function()
