@@ -1,6 +1,6 @@
 body
 {
-	background: #080808;
+	background: #0d0d0d;
 	color: #ddd;
 	font-family: "lucida grande", geneva, verdana, arial, sans-serif;
 	font-size: 11px;
@@ -17,6 +17,11 @@ h1, h2, h3
 p
 {
 	line-height: 1.5em;
+}
+
+canvas
+{
+	border: 1px dotted #444;
 }
 
 #main

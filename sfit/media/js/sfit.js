@@ -2,31 +2,39 @@ var processing;
 
 function load_data(data)
 {
-	graph = jQuery.parseJSON(data);
+//	graph = jQuery.parseJSON(data);
+	var p;
+	graph = new Array(4);
+	graph[0] = (data.edges_h);
+	graph[1] = (data.edges_v);
+	graph[2] = (data.diag_se);
+	graph[3] = (data.diag_sw);
 
 	$.get("/media/js/sfit-draw.pjs", function(code) {
 		canvas = $("#canvas")[0];
 		processing = Processing(canvas, code);
                 //calling from JS to PJS:
 		processing.setData(graph);
+		//setData(graph);
 	}); 
 }
 
 function saved(output)
 {
-	alert("saved! " + output);
 }
 
 function save()
 {
-	alert("saving data: " + data[0]);
-	// String data[] = processing.getData();
-	// $.post("save.php", { edges_h: data[0], edges_v: data[1], edges_d_se: data[2], edges_d_sw: data[3] }, saved, "json");
+	data = processing.getData();
+	url = "/grid/api/tshirt/";
+	alert("data len is " + data[1].length);
+	$.post(url, { edges_h: data[0], edges_v: data[1], diag_se: data[2], diag_sw: data[3], cell: 0 }, saved, "json");
 }
 
 $(document).ready(function()
 {
-	url = "/grid/api/tshirt";
+	url = "/grid/api/tshirt/last/";
+	// url = "/media/js/data.html";
 	$.ajax({
 		url: url,
 		success: load_data

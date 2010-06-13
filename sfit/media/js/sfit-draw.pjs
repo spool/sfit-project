@@ -31,6 +31,7 @@ class Grid
     }
     
     this.focus = new PVector(int(random(this.divisions)), int(random(this.divisions)));
+    this.focus = new PVector(0, 0);
   }
   
   void lightLine(int x0, int y0, int x1, int y1)
@@ -201,29 +202,35 @@ class Grid
   String[] serialize()
   {
     String data[] = new String[4];
+	data[0] = "";
+	data[1] = "";
+	data[2] = "";
+	data[3] = "";
 
-    for (int x = 0; x < size; x++)
-    for (int y = 0; y < size; y++)
+    for (int x = 0; x < this.size; x++)
+    for (int y = 0; y < this.size; y++)
     {
-      data[0] = data[0] + (this.edges_h[x][y].on ? 1 : 0);
-      data[1] = data[1] + (this.edges_v[x][y].on ? 1 : 0);
-      data[2] = data[2] + (this.edges_d_se[x][y].on ? 1 : 0);
-      data[3] = data[3] + (this.edges_d_sw[x][y].on ? 1 : 0);
+      data[0] = data[0] + (this.edges_h[x][y].on ? "1" : "0");
+      data[1] = data[1] + (this.edges_v[x][y].on ? "1" : "0");
+      data[2] = data[2] + (this.edges_d_se[x][y].on ? "1" : "0");
+      data[3] = data[3] + (this.edges_d_sw[x][y].on ? "1" : "0");
     }
-      
+
     return data;
   }
   
   /// XXX processing.js: can't have space between Type and []
   void load(String[] data)
   {
-    for (int x = 0; x < size; x++)
-    for (int y = 0; y < size; y++)
+    if (!data[0]) return;
+
+    for (int x = 0; x < this.size; x++)
+    for (int y = 0; y < this.size; y++)
     {
-      this.edges_h[x][y].on = (data[0].charAt((x * (size)) + y) == '1');
-      this.edges_v[x][y].on = (data[1].charAt((x * size) + y) == '1');
-      this.edges_d_se[x][y].on = (data[2].charAt((x * size) + y) == '1');
-      this.edges_d_sw[x][y].on = (data[3].charAt((x * size) + y) == '1');
+      this.edges_h[x][y].on = (data[0].charAt((x * (this.size)) + y) == "1");
+      this.edges_v[x][y].on = (data[1].charAt((x * this.size) + y) == "1");
+      this.edges_d_se[x][y].on = (data[2].charAt((x * this.size) + y) == "1");
+      this.edges_d_sw[x][y].on = (data[3].charAt((x * this.size) + y) == "1");
     }
   }
   
@@ -338,6 +345,15 @@ void draw()
       grid.drawSubgrid();
       break;
   }
+}
+
+void setData(String[] data)
+{
+  grid.load(data);
+}
+
+void sayHello()
+{
 }
 
 void mouseDragged()
