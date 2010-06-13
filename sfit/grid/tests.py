@@ -14,7 +14,7 @@ class ApiTest(TestCase):
         u = User.objects.create_user('test', 'test@test.com', 'test')
         d = Design.objects.create(slug='tshirt', name= 'T Shirt')
 
-    def test_short_post(self):
+    def testShortPost(self):
         e_h  = rand_bool_seq()
         e_v  = rand_bool_seq()
         d_sw = rand_bool_seq()
@@ -30,7 +30,7 @@ class ApiTest(TestCase):
         response = self.client.post('/grid/api/tshirt/', post_data)
         self.assertEqual(response.status_code, 400)
 
-    def test_post(self):
+    def testPost(self):
         e_h  = rand_bool_seq(4096)
         e_v  = rand_bool_seq(4096)
         d_sw = rand_bool_seq(4096)
