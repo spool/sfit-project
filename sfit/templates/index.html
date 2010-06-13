@@ -12,6 +12,13 @@ Through this interface, you can make changes to your design, which will be one p
 <!--<canvas datasrc="/media/js/sfit-draw.pjs" id="canvas" width="512" height="512"></canvas> -->
 <canvas id="canvas" width="512" height="512"></canvas>
 
-<form><button onclick="return false" id="save">save</button></form>
+<form action="/grid/api/tshirt/" method="post" id="form">
+	<input type="hidden" id="edges_h" name="edges_h" />
+	<input type="hidden" id="edges_v" name="edges_v" />
+	<input type="hidden" id="diag_se" name="diag_se" />
+	<input type="hidden" id="diag_sw" name="diag_sw" />
+	<input type="hidden" id="cell" name="cell" />
+	<button onclick="return false" id="save">save</button>
+</form>
 
 {% endblock %}

@@ -26,6 +26,7 @@ function save()
 	url = "/grid/api/tshirt/";
 	// url = "http://erase.net/dump/save.php";
 	// $.post(url, { edges_h: "" + data[0], edges_v: "" + data[1], diag_se: "" + data[2], diag_sw: "" + data[3], cell: "0" }, saved);
+	/*
 	data_dict = { edges_h: data[0], edges_v: data[1], diag_se: data[2], diag_sw: data[3], cell: "0" };
 	alert("lengths: " + data[0].length + ", " + data[1].length + ", " + data[2].length + ", " + data[3].length);
 	$.ajax({
@@ -34,6 +35,13 @@ function save()
 		data: data_dict,
 		success: saved
 	});
+	*/
+	input = document.getElementById("edges_h"); input.value = data[0];
+	input = document.getElementById("edges_v"); input.value = data[1];
+	input = document.getElementById("diag_se"); input.value = data[2];
+	input = document.getElementById("diag_sw"); input.value = data[3];
+	input = document.getElementById("cell"); input.value = 0;
+	form = document.getElementById("form"); form.submit();
 }
 
 $(document).ready(function()
