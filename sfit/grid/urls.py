@@ -8,5 +8,5 @@ design_dict = {
 
 urlpatterns = patterns('',
         (r'^api/', include('sfit.grid.api.urls')),
-        (r'^', direct_to_template, {'template': 'base.html', 'extra_context': design_dict}),
+        (r'^/', direct_to_template, {'template': 'base.html', 'extra_context': design_dict}),
         )

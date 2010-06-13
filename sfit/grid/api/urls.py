@@ -6,8 +6,8 @@ design_handler = Resource(DesignHandler)
 
 urlpatterns = patterns('',
         url(r'^(?P<slug>[^/]+)/$', design_handler),
-        url(r'^(?P<slug>[^/]+)/(?P<timestamp>[^/]+)/$', design_handler),
-        url(r'^(?P<slug>[^/]+)/last/$', design_handler, {'last': True}),
+        #url(r'^(?P<slug>[^/]+)/(?P<timestamp>[^/]+)/$', design_handler),
+        url(r'^(?P<slug>[^/]+)/(?P<last>[^/]+)/$', design_handler),
         url(r'^$', design_handler),
         )
 

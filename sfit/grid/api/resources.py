@@ -13,7 +13,7 @@ class DesignHandler(BaseHandler):
     allowed_methods = ('GET', 'POST')
     model = Design
 
-    def read(self, request, slug=None, timestamp=None, last=False):
+    def read(self, request, slug=None, timestamp=None, last=None):
         """
         Returns a blogpost, if `slug` is given,
         otherwise all the posts.
@@ -23,13 +23,13 @@ class DesignHandler(BaseHandler):
         """
         if slug:
             design = Design.objects.get(slug=slug)
-            if last:
+            if last == 'last':
                 try:
                     return design.deltas.latest()
                 except ObjectDoesNotExist:
                     return rc.NOT_HERE
-            if timestamp:
-                return design.deltas.get(timestamp=timestamp)
+            #elif timestamp:
+            #    return design.deltas.get(timestamp=timestamp)
             else:
                 return design
         else:
