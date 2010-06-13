@@ -3,6 +3,8 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from piston.utils import validate, rc
 from grid.models import *
+from django.contrib.auth import logout
+from django.shortcuts import render_to_response
 
 class DeltaForm(forms.ModelForm):
     class Meta:
@@ -41,6 +43,6 @@ class DesignHandler(BaseHandler):
         delta  = Delta.objects.create(user=request.user, design=design)
         delta  = DeltaForm(request.POST, instance=delta)
         delta.save()
-        return delta
-        
+        logout(request)
+        return render_to_response('thanks.html')
         
