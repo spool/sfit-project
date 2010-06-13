@@ -43,4 +43,3 @@ class DesignHandler(BaseHandler):
         delta.save()
         return delta
         
-        
