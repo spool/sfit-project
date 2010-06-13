@@ -28,11 +28,7 @@ class ApiTest(TestCase):
         login = self.client.login(username='test', password='test')
         self.failUnless(login, 'Could not login')
         response = self.client.post('/grid/api/tshirt/', post_data)
-        self.assertEqual(response.status_code, 200)
-        d = Design.objects.get(slug='tshirt')
-        delta = d.deltas.last()
-        self.assertEqual(delta.edges_h, e_h)
-        self.assertEqual(delta.user, User.objects.get(username='test'))
+        self.assertEqual(response.status_code, 400)
 
     def test_post(self):
         e_h  = rand_bool_seq(4096)
