@@ -76,6 +76,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'sfit.urls'
@@ -89,6 +90,7 @@ TEMPLATE_DIRS = (
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/grid/'
+INTERNAL_IPS = ('127.0.0.1', '87.106.128.174')
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -101,4 +103,5 @@ INSTALLED_APPS = (
     'piston',
     'grid',
     'south',
+    'debug_toolbar',
 )
