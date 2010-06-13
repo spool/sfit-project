@@ -14,22 +14,41 @@ class ApiTest(TestCase):
         u = User.objects.create_user('test', 'test@test.com', 'test')
         d = Design.objects.create(slug='tshirt', name= 'T Shirt')
 
-    def test_post(self):
+    def test_short_post(self):
         e_h  = rand_bool_seq()
         e_v  = rand_bool_seq()
         d_sw = rand_bool_seq()
         d_se = rand_bool_seq()
         post_data = {
-                'edges_h'  : e_h,
-                'edges_v'  : e_v,
-                'diag_sw'  : d_sw,
-                'diag_se'  : d_se,
+                'edges_h': e_h,
+                'edges_v': e_v,
+                'diag_sw': d_sw,
+                'diag_se': d_se,
                 }
         login = self.client.login(username='test', password='test')
         self.failUnless(login, 'Could not login')
         response = self.client.post('/grid/api/tshirt/', post_data)
         self.assertEqual(response.status_code, 200)
-        print Design.objects.all()
+        d = Design.objects.get(slug='tshirt')
+        delta = d.deltas.last()
+        self.assertEqual(delta.edges_h, e_h)
+        self.assertEqual(delta.user, User.objects.get(username='test'))
+
+    def test_post(self):
+        e_h  = rand_bool_seq(4096)
+        e_v  = rand_bool_seq(4096)
+        d_sw = rand_bool_seq(4096)
+        d_se = rand_bool_seq(4096)
+        post_data = {
+                'edges_h': e_h,
+                'edges_v': e_v,
+                'diag_sw': d_sw,
+                'diag_se': d_se,
+                }
+        login = self.client.login(username='test', password='test')
+        self.failUnless(login, 'Could not login')
+        response = self.client.post('/grid/api/tshirt/', post_data)
+        self.assertEqual(response.status_code, 200)
         d = Design.objects.get(slug='tshirt')
         delta = d.deltas.last()
         self.assertEqual(delta.edges_h, e_h)

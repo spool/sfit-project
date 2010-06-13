@@ -34,6 +34,7 @@ class DesignHandler(BaseHandler):
         design = Design.objects.get(slug=slug)
         delta  = Delta.objects.create(user=request.user, design=design)
         delta  = DeltaForm(request.POST, instance=delta)
+        delta.save()
         return delta
         
         
