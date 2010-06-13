@@ -4,11 +4,11 @@ function load_data(data)
 {
 	graph = jQuery.parseJSON(data);
 
-	$.get("/media/js/sfit-draw-2.pjs", function(code) {
+	$.get("/media/js/sfit-draw.pjs", function(code) {
 		canvas = $("#canvas")[0];
 		processing = Processing(canvas, code);
                 //calling from JS to PJS:
-		p.setData(graph);
+		processing.setData(graph);
 	}); 
 }
 
@@ -20,13 +20,13 @@ function saved(output)
 function save()
 {
 	alert("saving data: " + data[0]);
-	String data[] = p.getData();
-	$.post("save.php", { edges_h: data[0], edges_v: data[1], edges_d_se: data[2], edges_d_sw: data[3] }, saved, "json");
+	// String data[] = processing.getData();
+	// $.post("save.php", { edges_h: data[0], edges_v: data[1], edges_d_se: data[2], edges_d_sw: data[3] }, saved, "json");
 }
 
 $(document).ready(function()
 {
-	url = "http://localhost:8080/pi/netjs/griff/";
+	url = "/grid/api/tshirt";
 	$.ajax({
 		url: url,
 		success: load_data

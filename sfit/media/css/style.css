@@ -1,5 +1,27 @@
 body
 {
-	background: black;
-    color: white;
+	background: #080808;
+	color: #ddd;
+	font-family: "lucida grande", geneva, verdana, arial, sans-serif;
+	font-size: 11px;
+	text-align: center;
+}
+
+h1, h2, h3
+{
+	color: #e30;
+	font-weight: normal;
+	text-align: left;
+}
+
+p
+{
+	line-height: 1.5em;
+}
+
+#main
+{
+	width: 512px;
+	margin: auto;
+	text-align: left;
 }

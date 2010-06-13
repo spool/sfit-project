@@ -1,0 +1,443 @@
+class Grid
+{
+  int size;
+  int divisions;
+  int cells_per_division;
+  Edge edges_h[][];
+  Edge edges_v[][];
+  Edge edges_d_se[][];
+  Edge edges_d_sw[][];
+  boolean divisions_started[][];
+  PVector focus;
+  
+  Grid(int size, int divisions)
+  {
+    this.size = size;
+    this.divisions = divisions;
+    this.cells_per_division = this.size / this.divisions;
+    this.edges_h = new Edge[size][size];
+    this.edges_v = new Edge[size][size];
+    this.edges_d_se = new Edge[size][size];
+    this.edges_d_sw = new Edge[size][size];
+    this.divisions_started = new boolean[this.divisions][this.divisions];
+    
+    for (int x = 0; x < size; x++)
+    for (int y = 0; y < size; y++)
+    {
+      this.edges_h[x][y] = new Edge(Math.random() < PROB_LINE_ON);
+      this.edges_v[x][y] = new Edge(Math.random() < PROB_LINE_ON);
+      this.edges_d_se[x][y] = new Edge(Math.random() < PROB_LINE_ON);
+      this.edges_d_sw[x][y] = new Edge(Math.random() < PROB_LINE_ON);
+    }
+    
+    this.focus = new PVector(int(random(this.divisions)), int(random(this.divisions)));
+  }
+  
+  void lightLine(int x0, int y0, int x1, int y1)
+  {
+    stroke(64);
+    line(x0, y0, x1, y1);
+  }
+
+  void darkLine(int x0, int y0, int x1, int y1)
+  {
+    stroke(255);
+    line(x0, y0, x1, y1);
+  }
+
+  void toggleLine(int x0, int y0, int x1, int y1)
+  {
+    // work out which array we need to modify
+    if (x0 == x1)
+    {
+      this.edges_v[x0][min(y0, y1)].toggle();
+    }
+    else if (y0 == y1)
+    {
+      this.edges_h[min(x0, x1)][y0].toggle();
+    }
+    else if ((x1 - x0) == (y1 - y0))
+    {
+      this.edges_d_se[min(x0, x1)][min(y0, y1)].toggle();
+    }
+    else
+    {
+      this.edges_d_sw[min(x0, x1)][min(y0, y1)].toggle();
+    }
+    
+    // mark this division as started
+    int current_division_x = int(x0 / this.cells_per_division);
+    int current_division_y = int(y0 / this.cells_per_division);
+    if (x0 % cells_per_division == 0 || y0 % cells_per_division == 0)
+      return;
+      
+    if (!this.divisions_started[current_division_x][current_division_y])
+    {
+      this.divisions_started[current_division_x][current_division_y] = true;
+    }
+  }
+
+  void setFocus(float x, float y)
+  {
+    this.focus.x = int(x);
+    if (this.focus.x < 0)
+      this.focus.x += this.divisions;
+    if (this.focus.x >= this.divisions)
+      this.focus.x -= this.divisions;
+
+    this.focus.y = int(y);
+    if (this.focus.y < 0)
+      this.focus.y += this.divisions;
+    if (this.focus.y >= this.divisions)
+      this.focus.y -= this.divisions;
+  }
+  
+  void setRandomFocus()
+  {
+    // select an unstarted cell, and set focus to this
+    boolean unstarted_exists = false;
+    for (int x = 0; x < this.divisions; x++)
+    for (int y = 0; y < this.divisions; y++)
+    {
+      if (!this.divisions_started[x][y])
+      {
+        unstarted_exists = true;
+        break;
+      } 
+    }
+    
+    if (!unstarted_exists)
+    {
+      // all divisions have been started - pick one anyway
+      this.focus.x = int(random(this.divisions));
+      this.focus.y = int(random(this.divisions));
+    }
+    else
+    {
+      int division[] = this.pickNewDivision();
+      this.focus.x = division[0];
+      this.focus.y = division[1];
+    }
+  }
+  
+  void drawSubgrid()
+  {
+    stroke(255, 0, 0);
+    strokeWeight(0.05);
+    rect(0.5 * this.cells_per_division, 0.5 * this.cells_per_division, this.cells_per_division, this.cells_per_division);
+
+    stroke(0);
+    strokeWeight(0.02);    
+    
+    for (int x = 0; x < 2 * this.cells_per_division; x++)
+    for (int y = 0; y < 2 * this.cells_per_division; y++)
+    {
+      int ix = int(focus.x * this.cells_per_division) - (this.cells_per_division / 2) + (x);
+      if (ix >= size) ix -= size;
+      if (ix < 0) ix += size;
+
+      int iy = int(focus.y * this.cells_per_division) - (this.cells_per_division / 2) + (y);
+      if (iy >= size) iy -= size;
+      if (iy < 0) iy += size;
+      
+      // draw horiz
+      this.lightLine(x, y, x + 1, y);
+      if (this.edges_h[ix][iy].on) this.darkLine(x, y, x + 1, y);
+      
+      // draw vert
+      this.lightLine(x, y, x, y + 1);
+      if (this.edges_v[ix][iy].on) this.darkLine(x, y, x, y + 1);
+      
+      // draw diag se
+      this.lightLine(x, y, x + 1, y + 1);
+      if (this.edges_d_se[ix][iy].on) this.darkLine(x, y, x + 1, y + 1);
+      
+      // draw diag sw
+      this.lightLine(x, y + 1, x + 1, y);
+      if (this.edges_d_sw[ix][iy].on) this.darkLine(x, y + 1, x + 1, y);
+    }
+    
+    fill(0, 0, 0, 128);
+    noStroke();
+    
+    // draw horizontal bands
+    rect(0, 0, width, 0.5 * this.cells_per_division);
+    rect(0, 1.5 * this.cells_per_division, width, 0.5 * this.cells_per_division);
+    
+    rect(0, 0.5 * this.cells_per_division, 0.5 * this.cells_per_division, this.cells_per_division);
+    rect(1.5 * this.cells_per_division, 0.5 * this.cells_per_division, 0.5 * this.cells_per_division, this.cells_per_division);
+  }
+
+  void draw()
+  {
+    stroke(255, 0, 0);
+    strokeWeight(0.05);
+    rect(this.focus.x * this.cells_per_division, this.focus.y * this.cells_per_division, this.cells_per_division, this.cells_per_division);
+
+    stroke(0);
+    strokeWeight(0.02);
+    
+    for (int x = 0; x < size; x++)
+    for (int y = 0; y < size; y++)
+    {
+      // draw horiz
+      this.lightLine(x, y, x + 1, y);
+      if (this.edges_h[x][y].on) this.darkLine(x, y, x + 1, y);
+      
+      // draw vert
+      this.lightLine(x, y, x, y + 1);
+      if (this.edges_v[x][y].on) this.darkLine(x, y, x, y + 1);
+      
+      // draw diag se
+      this.lightLine(x, y, x + 1, y + 1);
+      if (this.edges_d_se[x][y].on) this.darkLine(x, y, x + 1, y + 1);
+      
+      // draw diag sw
+      this.lightLine(x, y + 1, x + 1, y);
+      if (this.edges_d_sw[x][y].on) this.darkLine(x, y + 1, x + 1, y);
+    }
+  }
+  
+  String[] serialize()
+  {
+    String data[] = new String[4];
+
+    for (int x = 0; x < size; x++)
+    for (int y = 0; y < size; y++)
+    {
+      data[0] = data[0] + (this.edges_h[x][y].on ? 1 : 0);
+      data[1] = data[1] + (this.edges_v[x][y].on ? 1 : 0);
+      data[2] = data[2] + (this.edges_d_se[x][y].on ? 1 : 0);
+      data[3] = data[3] + (this.edges_d_sw[x][y].on ? 1 : 0);
+    }
+      
+    return data;
+  }
+  
+  /// XXX processing.js: can't have space between Type and []
+  void load(String[] data)
+  {
+    for (int x = 0; x < size; x++)
+    for (int y = 0; y < size; y++)
+    {
+      this.edges_h[x][y].on = (data[0].charAt((x * (size)) + y) == '1');
+      this.edges_v[x][y].on = (data[1].charAt((x * size) + y) == '1');
+      this.edges_d_se[x][y].on = (data[2].charAt((x * size) + y) == '1');
+      this.edges_d_sw[x][y].on = (data[3].charAt((x * size) + y) == '1');
+    }
+  }
+  
+  void clear()
+  {
+    for (int x = 0; x < this.size; x++)
+    for (int y = 0; y < this.size; y++)
+    {
+      this.edges_h[x][y].on = false;
+      this.edges_v[x][y].on = false;
+      this.edges_d_se[x][y].on = false;
+      this.edges_d_sw[x][y].on = false;
+    }
+  }
+  
+  int[] pickNewDivision()
+  {
+    int[][] possibilities;
+    int possibility_count = 0;
+
+    // XXX processing.js doesn't seem to like declaration + init on same line...
+    possibilities = new int[this.divisions * this.size][2];
+    
+    for (int x = 0; x < this.divisions; x++)
+    for (int y = 0; y < this.divisions; y++)
+    {
+      if (this.divisions_started[x][y])
+      {
+        possibilities[possibility_count] = new int[] { x, y };
+        possibility_count++;
+      }
+    }
+    
+    boolean found = false;
+    int attempts_left = 500;
+    while (!found && (attempts_left > 0))
+    {
+      int source[] = possibilities[int(random(possibility_count))];
+      int[][] relations = new int[][] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+      int dir[] = relations[int(random(relations.length))];
+      
+      int nx = source[0] + dir[0];
+      if (nx < 0) nx += this.divisions;
+      if (nx >= this.divisions) nx -= this.divisions;
+      
+      int ny = source[1] + dir[1];
+      if (ny < 0) ny += this.divisions;
+      if (ny >= this.divisions) ny -= this.divisions;
+      
+      if (!this.divisions_started[nx][ny])
+      {
+        return new int[] { nx, ny };
+      }
+    } // while
+    
+    // oh dear, we've made many attempts but not found a free neighbour.
+    // return the first cell in desparation.
+    return new int[] { 0, 0 };
+  }
+}
+
+class Edge
+{
+  boolean on = false;
+  
+  Edge(boolean on)
+  {
+    this.on = on;
+  }
+  
+  void toggle()
+  {
+    on = !on;
+  }
+}
+
+final int MODE_WHOLE = 0;
+final int MODE_SINGLE = 1;
+final float PROB_LINE_ON = 0.00;
+
+PVector origin;
+Grid grid;
+
+int CELL_WIDTH = 8;
+int CELL_COUNT = 64;
+int CELL_DIVISIONS = 8;
+
+int mode = MODE_SINGLE;
+
+void setup()
+{
+  size(CELL_WIDTH * CELL_COUNT, CELL_WIDTH * CELL_COUNT);
+  smooth();
+
+  grid = new Grid(CELL_COUNT, CELL_DIVISIONS);
+  origin = new PVector(-1, -1);
+}
+
+void draw()
+{
+  background(0);
+  noFill();
+  
+  switch (mode)
+  {
+    case MODE_WHOLE:
+      scale(CELL_WIDTH, CELL_WIDTH);
+      grid.draw();
+      break;
+    case MODE_SINGLE:
+      scale(CELL_WIDTH * CELL_DIVISIONS * 0.5, CELL_WIDTH * CELL_DIVISIONS * 0.5);
+      grid.drawSubgrid();
+      break;
+  }
+}
+
+void mouseDragged()
+{
+  PVector normalized = new PVector(0, 0);   // normalized position of mouse, in global grid co-ordinates
+  PVector distance = new PVector(0, 0);     // normalized distance to nearest node (0..1)
+  PVector nearest = new PVector(0, 0);      // co-ordinates of nearest node
+ 
+  if (mode == MODE_WHOLE)
+  {
+    normalized.x = (float) mouseX / CELL_WIDTH;
+    normalized.y = (float) mouseY / CELL_WIDTH;
+  }
+  else
+  {
+    normalized.x = ((grid.focus.x - 0.5) * grid.cells_per_division) + ((float) mouseX / (CELL_WIDTH * CELL_DIVISIONS * 0.5));
+    normalized.y = ((grid.focus.y - 0.5) * grid.cells_per_division) + ((float) mouseY / (CELL_WIDTH * CELL_DIVISIONS * 0.5));
+    
+    if (normalized.x < (grid.focus.x * grid.cells_per_division) || normalized.x > (grid.focus.x * grid.cells_per_division) + grid.cells_per_division ||
+        normalized.y < (grid.focus.y * grid.cells_per_division) || normalized.y > (grid.focus.y * grid.cells_per_division) + grid.cells_per_division)
+        {
+          return;
+        }
+  }
+
+  distance.x = abs(round(normalized.x) - normalized.x);
+  distance.y = abs(round(normalized.y) - normalized.y);
+  nearest.x = round(normalized.x);
+  nearest.y = round(normalized.y);
+
+  if (dist(distance.x, distance.y, 0, 0) < 0.5)
+  {
+    // if we ar
+    stroke(0);
+    strokeWeight(1.5);
+    if (origin.x == -1)
+    {
+      // don't have a current drag origin - set.
+      origin.x = nearest.x;
+      origin.y = nearest.y;      
+    }
+    else if ((origin.x != -1) && ((origin.x != nearest.x) || (origin.y != nearest.y)))
+    {
+      // new line to add
+      grid.toggleLine((int) origin.x, (int) origin.y, (int) nearest.x, (int) nearest.y);
+      // println("toggling " + origin.x + ", " + origin.y);
+      origin.x = nearest.x;
+      origin.y = nearest.y;
+    }
+  }
+}
+
+void mouseReleased()
+{
+  origin.x = -1;
+  origin.y = -1;
+}
+
+String[] getData()
+{
+  return grid.serialize();
+}
+
+void keyPressed()
+{
+  if (key == 's')
+  {
+    String serial[] = grid.serialize();
+    for (int i = 0; i < serial.length; i++)
+      println(serial[i]);
+    saveStrings("data.txt", serial);
+  }
+  else if (key == 'r')
+  {
+    grid.setRandomFocus();
+  }
+  else if (key == 'l')
+  {
+    String data[] = loadStrings("data.txt");
+    grid.load(data);
+  }
+  else if (key == 'c')
+  {
+    grid.clear();
+  }
+  else if (key == 'm')
+  {
+    mode = (mode == MODE_SINGLE) ? MODE_WHOLE : MODE_SINGLE;
+  }
+  else if (key == 't')
+  {
+    // unit test: does loading work?
+    String data[] = grid.serialize();
+    grid.load(data);
+  }
+  switch (keyCode)
+  {
+    case RIGHT: grid.setFocus(grid.focus.x + 1, grid.focus.y); break;
+    case LEFT: grid.setFocus(grid.focus.x - 1, grid.focus.y); break;
+    case UP: grid.setFocus(grid.focus.x, grid.focus.y - 1); break;
+    case DOWN: grid.setFocus(grid.focus.x, grid.focus.y + 1); break;
+  }
+}

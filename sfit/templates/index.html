@@ -1,22 +1,14 @@
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% extends "base.html" %}
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-<head>
-        <title>sfit</title>
-        <link rel="stylesheet" type="text/css" href="/media/css/style.css" />
-	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<script type="text/javascript" src="/media/js/sfit.js"></script>
-</head>
-<body>
-    <h1>Template works!</h1>
+{% block title %}The SFI CSSS 2010 T-shirt Designer{% endblock %}
 
-<div id="main" class="result">
+{% block content %}
 
+<p>
+Welcome to the t-shirt designer, a micro-project produced as part of the SFI Complex Systems Summer School 2010.
+Through this interface, you can make changes to your design, which will be one part of a larger piece.
+</p>
 
+<canvas datasrc="/media/js/sfit-draw.pjs" id="canvas" width="512" height="512"></canvas>
 
-</div>
-</body>
-</html>
+{% endblock %}
