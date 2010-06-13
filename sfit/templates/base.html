@@ -7,18 +7,26 @@
         <link rel="stylesheet" type="text/css" href="/media/css/style.css" />
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<script type="text/javascript" src="/media/js/sfit.js"></script>
+	<!-- <script type="text/javascript" src="/media/js/sfit.js"></script> -->
+	<!-- <script type="text/javascript" src="/media/js/processing-0.9.js"></script> -->
+	<script type="text/javascript" src="http://processingjs.org/content/download/processing-js-0.9.1/processing-0.9.1.js"></script>
 </head>
 <body>
-    <h1>{{ design.name }}</h1> 
-    {% block content %}
     <div id="main" class="result">
+    	<h1>{% block title %}sfit{% endblock %}</h1>
+
+	<div id="content">
+    	{% block content %}
+	</div>
+
+	<!-- 
         {% with design.deltas.latest as delta %}
             <p>{{ delta.edges_h }}</p>
             <p>{{ delta.edges_v }}</p>
             <p>{{ delta.diag_se }}</p>
             <p>{{ delta.diag_sw }}</p>
         {% endwith %}
+	-->
     </div>
     {% endblock content %}
 
