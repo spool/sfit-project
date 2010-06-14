@@ -354,8 +354,7 @@ void setData(String[] data)
 
 void setCell(int cell)
 {
-  grid.setFocus(4, 4);
-  // grid.setFocus(cell % 8 + 1, (int) cell / 8);
+  grid.setFocus(cell % 8, (int) cell / 8);
 }
 
 void mouseDragged()
