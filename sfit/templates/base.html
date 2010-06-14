@@ -16,7 +16,7 @@
     <h1>{% block title %}sfit{% endblock %}</h1>
     {% block login %}
     <div id="login-status">
-        <p>{{ user }} | <a href="/users/logout/">logout</a></p>
+        <p>{{ request.user }} | {{ user.username }} | {{ user }} || <a href="/users/logout/">logout</a></p>
     </div>
     {% endblock login %}
     <div id="content">
