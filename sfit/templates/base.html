@@ -15,21 +15,19 @@
     <h1>{% block title %}sfit{% endblock %}</h1>
     {% block login %}
     <div id="login-status">
-        <p>{{ auth.user }} | <a href="/users/logout/">logout</a></p>
+        <p>{{ user }} | <a href="/users/logout/">logout</a></p>
     </div>
     {% endblock login %}
     <div id="content">
         {% block content %}
         <p>
+        {% block status %}
         Welcome to the t-shirt designer, a micro-project produced as part of the SFI Complex Systems Summer School 2010. Through this interface, you can make changes to your design, which will be one part of a larger piece.
+        {% endblock status %}
         </p>
         <canvas id="canvas" width="512" height="512"></canvas>
         <form><button onclick="return false" id="save">save</button></form>
         {% endblock content %}
-    </div>
-    <div id="status">
-        {% block status %}
-        {% endblock status %}
     </div>
 </div>
 </body>
