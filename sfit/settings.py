@@ -3,12 +3,15 @@ import os
 
 PROJECT_ROOT = os.path.dirname(__file__)
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+#    ('Daniel Jones', 'dan@erase.net'),
+    ('Griff Rees', 'griff.rees@gmail.com')
 )
+
+SEND_BROKEN_LINK_EMAILS = False
 
 MANAGERS = ADMINS
 
