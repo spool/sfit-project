@@ -33,7 +33,7 @@ class DesignHandler(BaseHandler):
                 try:
                     cell = design.deltas.filter(user=request.user).latest().cell
                 except ObjectDoesNotExist:
-                    cell = 100
+                    cell = -1
                 d.cell = cell
                 return d
 
