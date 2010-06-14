@@ -31,7 +31,7 @@ class DesignHandler(BaseHandler):
                 except ObjectDoesNotExist:
                     return rc.NOT_HERE
                 try:
-                    cell = design.deltas.filter(user=request.user).latest()
+                    cell = design.deltas.filter(user=request.user).latest().cell
                 except ObjectDoesNotExist:
                     cell = ''
                 d.cell = cell
