@@ -14,6 +14,14 @@ h1, h2, h3
 	text-align: left;
 }
 
+a
+{
+	color: #aaa;
+}
+a:hover
+{
+	color: #ddd;
+}
 p
 {
 	line-height: 1.5em;
@@ -41,4 +49,8 @@ button
 	width: 512px;
 	margin: auto;
 	text-align: left;
+}
+#login-status
+{
+	text-align: right;
 }

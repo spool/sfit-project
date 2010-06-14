@@ -3,28 +3,30 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-        <title>sfit</title>
+        <title>The SFI CSSS 2010 Self-Organising T-shirt</title>
         <link rel="stylesheet" type="text/css" href="/media/css/style.css" />
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js"></script>
 	<script type="text/javascript" src="/media/js/processing-0.9.js"></script>
 	<script type="text/javascript" src="/media/js/sfit.js"></script>
 </head>
 <body>
 <div id="main" class="result">
-    <h1>{% block title %}sfit{% endblock %}</h1>
     {% block login %}
     <div id="login-status">
-        <p>{{ user }} | <a href="/users/logout/">logout</a></p>
+        <p>Logged in as <b>{{ user.get_full_name }}</b> | <a href="/users/logout/">logout</a></p>
     </div>
     {% endblock login %}
+    <h1>{% block title %}The SFI CSSS 2010 Self-Organising T-shirt{% endblock %}</h1>
     <div id="content">
         {% block content %}
         <p>
         {{ status }}
         {% comment %}
         {% block status %}
-        Welcome to the t-shirt designer, a micro-project produced as part of the SFI Complex Systems Summer School 2010. Through this interface, you can make changes to your design, which will be one part of a larger piece.
+        Welcome to the t-shirt designer, a micro-project produced as part of the SFI Complex Systems Summer School 2010.
+	You can here edit your segment of the design, contributing to an emergent whole through local interactions.
         {% endblock status %}
         {% endcomment %}
         </p>

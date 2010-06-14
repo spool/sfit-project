@@ -31,6 +31,7 @@ class Grid
     }
     
     this.focus = new PVector(int(random(this.divisions)), int(random(this.divisions)));
+    this.focus = new PVector(0, 0);
   }
   
   void lightLine(int x0, int y0, int x1, int y1)
@@ -201,10 +202,10 @@ class Grid
   String[] serialize()
   {
     String data[] = new String[4];
-    data[0] = "";
-    data[1] = "";
-    data[2] = "";
-    data[3] = "";
+	data[0] = "";
+	data[1] = "";
+	data[2] = "";
+	data[3] = "";
 
     for (int x = 0; x < this.size; x++)
     for (int y = 0; y < this.size; y++)
@@ -214,29 +215,22 @@ class Grid
       data[2] = data[2] + (this.edges_d_se[x][y].on ? "1" : "0");
       data[3] = data[3] + (this.edges_d_sw[x][y].on ? "1" : "0");
     }
-      
+
     return data;
   }
   
   /// XXX processing.js: can't have space between Type and []
   void load(String[] data)
   {
+    if (!data[0]) return;
+
     for (int x = 0; x < this.size; x++)
     for (int y = 0; y < this.size; y++)
     {
-      this.edges_h[x][y].on = (data[0].charAt((x * (size)) + y) == "1");
-      this.edges_v[x][y].on = (data[1].charAt((x * size) + y) == "1");
-      this.edges_d_se[x][y].on = (data[2].charAt((x * size) + y) == "1");
-      this.edges_d_sw[x][y].on = (data[3].charAt((x * size) + y) == "1");
-      
-      int current_division_x = int(x / this.cells_per_division);
-      int current_division_y = int(y / this.cells_per_division);
-
-      if (!this.divisions_started[current_division_x][current_division_y] &&
-          (this.edges_h[x][y].on || this.edges_v[x][y].on || this.edges_d_se[x][y].on || this.edges_d_sw[x][y].on))
-          {
-            this.divisions_started[current_division_x][current_division_y] = true;
-          }
+      this.edges_h[x][y].on = (data[0].charAt((x * (this.size)) + y) == "1");
+      this.edges_v[x][y].on = (data[1].charAt((x * this.size) + y) == "1");
+      this.edges_d_se[x][y].on = (data[2].charAt((x * this.size) + y) == "1");
+      this.edges_d_sw[x][y].on = (data[3].charAt((x * this.size) + y) == "1");
     }
   }
   
@@ -269,9 +263,6 @@ class Grid
         possibility_count++;
       }
     }
-    
-    if (possibility_count == 0)
-      return new int[] { 0, 0 };
     
     boolean found = false;
     int attempts_left = 500;
@@ -359,7 +350,6 @@ void draw()
 void setData(String[] data)
 {
   grid.load(data);
-  grid.setRandomFocus();
 }
 
 void setCell(int cell)
@@ -428,8 +418,43 @@ String[] getData()
   return grid.serialize();
 }
 
-int getCell()
+void keyPressed()
 {
-  int cell = (int) (grid.focus.x + 8 * grid.focus.y);
-  return cell;
+  if (key == 's')
+  {
+    String serial[] = grid.serialize();
+    for (int i = 0; i < serial.length; i++)
+      println(serial[i]);
+    saveStrings("data.txt", serial);
+  }
+  else if (key == 'r')
+  {
+    grid.setRandomFocus();
+  }
+  else if (key == 'l')
+  {
+    String data[] = loadStrings("data.txt");
+    grid.load(data);
+  }
+  else if (key == 'c')
+  {
+    grid.clear();
+  }
+  else if (key == 'm')
+  {
+    mode = (mode == MODE_SINGLE) ? MODE_WHOLE : MODE_SINGLE;
+  }
+  else if (key == 't')
+  {
+    // unit test: does loading work?
+    String data[] = grid.serialize();
+    grid.load(data);
+  }
+  switch (keyCode)
+  {
+    case RIGHT: grid.setFocus(grid.focus.x + 1, grid.focus.y); break;
+    case LEFT: grid.setFocus(grid.focus.x - 1, grid.focus.y); break;
+    case UP: grid.setFocus(grid.focus.x, grid.focus.y - 1); break;
+    case DOWN: grid.setFocus(grid.focus.x, grid.focus.y + 1); break;
+  }
 }
