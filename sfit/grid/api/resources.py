@@ -27,9 +27,16 @@ class DesignHandler(BaseHandler):
             design = Design.objects.get(slug=slug)
             if last == 'last':
                 try:
-                    return design.deltas.latest()
+                    d = design.deltas.latest()
                 except ObjectDoesNotExist:
                     return rc.NOT_HERE
+                try:
+                    cell = design.deltas.filter(user=request.user).latest()
+                except ObjectDoesNotExist:
+                    cell = ''
+                d.cell = cell
+                return d
+
             #elif timestamp:
             #    return design.deltas.get(timestamp=timestamp)
             else:
