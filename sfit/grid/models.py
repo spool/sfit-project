@@ -36,8 +36,8 @@ class Delta(models.Model):
         return '%s: %s' % (self.user, self.timestamp)
 
     class Meta:
-        get_latest_by = "timestamp"
-        ordering = ['timestamp']
+        get_latest_by = "id"
+        ordering = ['id']
 
 class Design(models.Model):
     slug      = models.SlugField(unique=True)
@@ -49,8 +49,8 @@ class Design(models.Model):
         return self.name
 
     class Meta:
-        get_latest_by = "timestamp"
-        ordering = ['timestamp']
+        get_latest_by = "id"
+        ordering = ['id']
 
 class DeltaInline(admin.TabularInline):
     model = Delta
