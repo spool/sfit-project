@@ -7,5 +7,5 @@ from grid.models import *
 def grid_edit(request, slug=None):
     if slug: d = get_object_or_404(Design, slug=slug)
     else: d = Design.objects.last()
-    return render_to_response('index.html', {'design': d})
+    return render_to_response('index.html', {'design': d, 'user': request.user})
 
