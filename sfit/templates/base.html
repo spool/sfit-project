@@ -23,12 +23,6 @@
         {% block content %}
         <p>
         {{ status }}
-        {% comment %}
-        {% block status %}
-        Welcome to the t-shirt designer, a micro-project produced as part of the SFI Complex Systems Summer School 2010.
-	You can here edit your segment of the design, contributing to an emergent whole through local interactions.
-        {% endblock status %}
-        {% endcomment %}
         </p>
         <canvas id="canvas" width="512" height="512"></canvas>
         <form action="/grid/api/tshirt/" id="form" method="post">
