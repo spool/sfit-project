@@ -11,26 +11,21 @@
 	<script type="text/javascript" src="/media/js/sfit.js"></script>
 </head>
 <body>
-    <div id="main" class="result">
-    	<h1>{% block title %}sfit{% endblock %}</h1>
-
-	<div id="content">
-    	{% block content %}
-	</div>
-
-	<!-- 
-        {% with design.deltas.latest as delta %}
-            <p>{{ delta.edges_h }}</p>
-            <p>{{ delta.edges_v }}</p>
-            <p>{{ delta.diag_se }}</p>
-            <p>{{ delta.diag_sw }}</p>
-        {% endwith %}
-	-->
+<div id="main" class="result">
+    <h1>{% block title %}sfit{% endblock %}</h1>
+    {% block login %}
+    <div id="login-status">
+        <p>{{ auth.user }} | <a href="/users/logout/">logout</a></p>
     </div>
-    {% endblock content %}
-
-
-
+    {% endblock login %}
+    <div id="content">
+        {% block content %}
+        {% endblock content %}
+    </div>
+    <div id="status">
+        {% block status %}
+        {% endblock status %}
+    </div>
 </div>
 </body>
 </html>
