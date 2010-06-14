@@ -8,17 +8,18 @@ function load_data(data)
 	graph[2] = (data.diag_se);
 	graph[3] = (data.diag_sw);
 
-	$.get("/media/js/sfit-draw.pjs", function(code) {
+	$.get("/media/js/sfit-draw.pjs?" + (Math.random() * 5000), function(code) {
 		canvas = $("#canvas")[0];
 		processing = Processing(canvas, code);
                 //calling from JS to PJS:
 		processing.setData(graph);
-		processing.setCell(4);
+		processing.setCell(data.cell);
 	}); 
 }
 
 function saved(output)
 {
+	alert("saved");
 }
 
 function save()

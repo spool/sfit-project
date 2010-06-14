@@ -24,7 +24,14 @@
         Welcome to the t-shirt designer, a micro-project produced as part of the SFI Complex Systems Summer School 2010. Through this interface, you can make changes to your design, which will be one part of a larger piece.
         </p>
         <canvas id="canvas" width="512" height="512"></canvas>
-        <form><button onclick="return false" id="save">save</button></form>
+        <form action="/grid/api/tshirt/" id="form" method="post">
+		<input type="hidden" id="edges_h" name="edges_h" />
+		<input type="hidden" id="edges_v" name="edges_v" />
+		<input type="hidden" id="diag_se" name="diag_se" />
+		<input type="hidden" id="diag_sw" name="diag_sw" />
+		<input type="hidden" id="cell" name="cell" />
+		<button onclick="return false" id="save">save</button>
+	</form>
         {% endblock content %}
     </div>
     <div id="status">
