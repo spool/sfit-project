@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from piston.utils import validate, rc
 from grid.models import *
 from django.contrib.auth import logout
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 
 class DeltaForm(forms.ModelForm):
     class Meta:
@@ -14,6 +14,7 @@ class DeltaForm(forms.ModelForm):
 class DesignHandler(BaseHandler):
     allowed_methods = ('GET', 'POST')
     model = Design
+    
 
     def read(self, request, slug=None, timestamp=None, last=None):
         """
@@ -50,4 +51,5 @@ class DesignHandler(BaseHandler):
         delta  = Delta.objects.create(user=request.user, design=design)
         delta  = DeltaForm(request.POST, instance=delta)
         delta.save()
-        return render_to_response('thanks.html', {'user': request.user})
+        thank_you = "Thanks very much! Feel free to log back in any time and update your piece of the design, and see what your neighbors are up to."
+        return redirect('/', {'user': request.user, 'status': thank_you})
