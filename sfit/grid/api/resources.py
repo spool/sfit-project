@@ -44,11 +44,10 @@ class DesignHandler(BaseHandler):
         else:
             return Design.objects.all()
 
-    #@validate(DeltaForm)
+    @validate(DeltaForm)
     def create(self, request, slug):
         design = Design.objects.get(slug=slug)
         delta  = Delta.objects.create(user=request.user, design=design)
         delta  = DeltaForm(request.POST, instance=delta)
         delta.save()
-        return render_to_response('thanks.html')
-        
+        return render_to_response('thanks.html', {'user': request.user})
