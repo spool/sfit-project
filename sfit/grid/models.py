@@ -28,7 +28,6 @@ class Delta(models.Model):
     diag_sw   = models.CharField(max_length=4096,
             validators = [validators.RegexValidator(r'[01]{4096}')])
     cell      = models.PositiveSmallIntegerField(blank=True, null=True)
-    # cell      = models.CharField(max_length = 1)
     user      = models.ForeignKey(User, related_name='deltas')
     design    = models.ForeignKey('Design', related_name='deltas')
     objects   = TimeSeriesManager()
