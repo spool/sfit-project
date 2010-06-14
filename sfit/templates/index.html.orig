@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}The SFI CSSS 2010 T-shirt Designer{% endblock %}
+<<<<<<< HEAD
+=======
+
+{% block content %}
+
+<p>
+Welcome to the t-shirt designer, a micro-project produced as part of the SFI Complex Systems Summer School 2010.
+Through this interface, you can make changes to your design, which will be one part of a larger piece.
+</p>
+
+<!--<canvas datasrc="/media/js/sfit-draw.pjs" id="canvas" width="512" height="512"></canvas> -->
+<canvas id="canvas" width="512" height="512"></canvas>
+
+<form action="/grid/api/tshirt/" method="post" id="form">
+	<input type="hidden" id="edges_h" name="edges_h" />
+	<input type="hidden" id="edges_v" name="edges_v" />
+	<input type="hidden" id="diag_se" name="diag_se" />
+	<input type="hidden" id="diag_sw" name="diag_sw" />
+	<input type="hidden" id="cell" name="cell" />
+	<button onclick="return false" id="save">save</button>
+</form>
+
+{% endblock %}
+>>>>>>> 4e4d98a163fafc448f09e968428d3ee0ef23c115
