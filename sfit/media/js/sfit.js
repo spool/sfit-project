@@ -13,6 +13,7 @@ function load_data(data)
 		processing = Processing(canvas, code);
                 //calling from JS to PJS:
 		processing.setData(graph);
+		processing.setCell(4);
 	}); 
 }
 
