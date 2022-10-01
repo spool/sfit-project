@@ -1,4 +1,5 @@
-django
+django==1.2
 django-piston
 south
-django-debug-toolbar
+# django-debug-toolbar
+django-extensions

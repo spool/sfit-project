@@ -232,6 +232,10 @@ class Grid
       int current_division_x = int(x / this.cells_per_division);
       int current_division_y = int(y / this.cells_per_division);
 
+      if ((x % this.cells_per_division == 0) || (y % this.cells_per_division == 0))
+        continue;
+
+
       if (!this.divisions_started[current_division_x][current_division_y] &&
           (this.edges_h[x][y].on || this.edges_v[x][y].on || this.edges_d_se[x][y].on || this.edges_d_sw[x][y].on))
           {
